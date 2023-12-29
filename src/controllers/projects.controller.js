@@ -13,6 +13,19 @@ export const getProjects = async (req, res) => {
   }
 };
 
+export const getProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const project = await Project.findByPk(id);
+    if (!project) return res.status(500).json({ status: "error", message: error.message });
+    return res
+      .status(200)
+      .json({ status: "success", message: "Project", data: project });
+  } catch (error) {
+    return res.status(500).json({ status: "error", message: error.message });
+  }
+};
+
 export const createProject = async (req, res) => {
   const { name, priority, description } = req.body;
   try {
