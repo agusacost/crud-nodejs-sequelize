@@ -3,7 +3,7 @@ import { Project } from "../models/Project.js";
 export const getProjects = async (req, res) => {
   try {
     const projects = await Project.findAll();
-    res.json(projects);
+    res.status(200).json({status: 'success', data: projects});
   } catch (error) {
     return res.status(500).json({
       status: "error",
@@ -19,7 +19,7 @@ export const getProject = async (req, res) => {
     if (!project) return res.status(500).json({ status: "error", message: error.message });
     return res
       .status(200)
-      .json({ status: "success", message: "Project", data: project });
+      .json({ status: "success", data: project });
   } catch (error) {
     return res.status(500).json({ status: "error", message: error.message });
   }
