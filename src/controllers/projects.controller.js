@@ -1,4 +1,3 @@
-import { where } from "sequelize";
 import { Project } from "../models/Project.js";
 
 export const getProjects = async (req, res) => {
