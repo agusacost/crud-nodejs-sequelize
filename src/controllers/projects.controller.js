@@ -1,9 +1,10 @@
 import { Project } from "../models/Project.js";
+import { Task } from "../models/Task.js";
 
 export const getProjects = async (req, res) => {
   try {
     const projects = await Project.findAll();
-    res.status(200).json({status: 'success', data: projects});
+    res.status(200).json({ status: "success", data: projects });
   } catch (error) {
     return res.status(500).json({
       status: "error",
@@ -16,10 +17,9 @@ export const getProject = async (req, res) => {
   try {
     const { id } = req.params;
     const project = await Project.findByPk(id);
-    if (!project) return res.status(500).json({ status: "error", message: error.message });
-    return res
-      .status(200)
-      .json({ status: "success", data: project });
+    if (!project)
+      return res.status(500).json({ status: "error", message: error.message });
+    return res.status(200).json({ status: "success", data: project });
   } catch (error) {
     return res.status(500).json({ status: "error", message: error.message });
   }
@@ -88,5 +88,23 @@ export const deleteProject = async (req, res) => {
     return res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getProjectTasks = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const projectExist = await Project.findOne(
+      {
+        where: {id}
+      }
+    )
+    if(!projectExist) return res.status(500).json({status: 'error', message: "The project doesn't exists"})
+    const task = await Task.findAll({
+      where: { projectId: id },
+    });
+    return res.status(200).json({ status: "success", data: task });
+  } catch (error) {
+    return res.status(500).json({ status: "error", message: error.message });
   }
 };
